@@ -26,6 +26,18 @@ export default function Hero() {
     let raf = 0;
     let targetTime = 0;
 
+    // iOS/WebKit won't decode or render any frame until the video has
+    // "played" once — prime it with a muted play() then pause immediately.
+    // React doesn't always render the muted attribute, so set it directly.
+    video.muted = true;
+    video.defaultMuted = true;
+    const prime = () => {
+      video.play().then(() => video.pause()).catch(() => {});
+    };
+    prime();
+    // Autoplay may be blocked until first user gesture (e.g. Low Power Mode)
+    window.addEventListener('touchstart', prime, { once: true, passive: true });
+
     const onScroll = (progress: number) => {
       if (video.duration) {
         targetTime = Math.min(progress, 0.999) * video.duration;
@@ -49,6 +61,7 @@ export default function Hero() {
     return () => {
       unsubscribe();
       cancelAnimationFrame(raf);
+      window.removeEventListener('touchstart', prime);
     };
   }, [scrollYProgress]);
 
@@ -63,6 +76,7 @@ export default function Hero() {
         src="/mainvid-scrub.mp4"
         muted
         playsInline
+        autoPlay
         preload="auto"
         className="absolute inset-0 w-full h-full object-cover object-[85%_center] md:object-center pointer-events-none"
       />
