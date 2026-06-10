@@ -1,0 +1,8 @@
+{
+  "name": "The House Always Wins",
+  "description": "Financial Intelligence by Koech Boniface Kiprono. Forex, Betting, and the Quick-Money Illusion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
