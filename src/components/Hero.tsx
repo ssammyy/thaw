@@ -55,7 +55,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen px-5 sm:px-8 overflow-hidden flex flex-col justify-center bg-void-canvas"
+      className="relative min-h-screen px-5 sm:px-8 pb-20 md:pb-0 overflow-hidden flex flex-col justify-end md:justify-center bg-void-canvas"
     >
       {/* Scroll-scrubbed background video */}
       <video
@@ -64,7 +64,7 @@ export default function Hero() {
         muted
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover object-[85%_center] md:object-center pointer-events-none"
       />
 
       {/* Dark overlay */}
@@ -79,6 +79,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
+          className="hidden md:block"
         >
           <div className="flex items-baseline flex-wrap">
             <h1 className="text-display-xl">THE HOUSE</h1>
