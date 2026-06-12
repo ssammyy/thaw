@@ -18,15 +18,24 @@ import ReportSection from './components/ReportSection';
 import ToolsSection from './components/ToolsSection';
 import TransitionMoment from './components/TransitionMoment';
 import Footer from './components/Footer';
+import DiagnosticPage from './components/DiagnosticPage';
 import { motion, useScroll, useSpring } from 'motion/react';
+import { useToolRoute, closeTool } from './useToolRoute';
+import { TOOLS_DATA } from './data/diagnosticData';
 
 export default function App() {
+  const activeTool = useToolRoute();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
+
+  // A tool route renders as its own full page rather than a modal over the landing.
+  if (activeTool) {
+    return <DiagnosticPage tool={TOOLS_DATA[activeTool]} onExit={closeTool} />;
+  }
 
   return (
     <main className="bg-void-canvas min-h-screen selection:bg-arterial-red selection:text-bone-white">

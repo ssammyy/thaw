@@ -3,22 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { useRef } from 'react';
 import { ShieldAlert, TrendingUp, RotateCcw, ArrowUpRight } from 'lucide-react';
-import { TOOLS_DATA } from '../data/diagnosticData';
 import { ToolType } from '../types';
-import DiagnosticTool from './DiagnosticTool';
-
-// Each scoring tool gets its own hash route, e.g. "#/vulnerability".
-// Hash routing keeps deep links working on any static host with no server
-// rewrites, and the "#/" prefix never collides with the "#tools" scroll anchor.
-const TOOL_ROUTES: ToolType[] = ['vulnerability', 'investment', 'recovery'];
-
-function toolFromHash(): ToolType | null {
-  const slug = window.location.hash.replace(/^#\/?/, '');
-  return (TOOL_ROUTES as string[]).includes(slug) ? (slug as ToolType) : null;
-}
+import { openTool } from '../useToolRoute';
 
 function ScrollRevealWords({ text, progress, range }: { text: string, progress: any, range: [number, number] }) {
   const words = text.split(" ");
@@ -29,11 +18,11 @@ function ScrollRevealWords({ text, progress, range }: { text: string, progress: 
         const end = range[0] + ((i + 0.5) / words.length) * (range[1] - range[0]);
         const opacity = useTransform(progress, [start, end], [0.1, 1]);
         const y = useTransform(progress, [start, end], [10, 0]);
-        
+
         return (
-          <motion.span 
-            key={i} 
-            style={{ opacity, y }} 
+          <motion.span
+            key={i}
+            style={{ opacity, y }}
             className="inline-block mr-[0.25em]"
           >
             {word}
@@ -45,51 +34,18 @@ function ScrollRevealWords({ text, progress, range }: { text: string, progress: 
 }
 
 export default function ToolsSection() {
-  const [activeTool, setActiveTool] = useState<ToolType | null>(null);
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
-  
+
   const { scrollYProgress: revealProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "center start"]
   });
 
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, 300]);
-
-  // Opening a tool just sets the hash route; the hashchange listener below is the
-  // single source of truth that maps the URL to the active tool. This makes each
-  // tool shareable/bookmarkable and lets the browser Back button close the modal.
-  const openTool = useCallback((tool: ToolType) => {
-    window.location.hash = `/${tool}`;
-  }, []);
-
-  // Closing strips the hash entirely (no bare "#", no extra history entry).
-  const closeTool = useCallback(() => {
-    history.replaceState(null, '', window.location.pathname + window.location.search);
-    setActiveTool(null);
-  }, []);
-
-  // Sync the active tool to the URL hash, and keep the in-app deep-link event
-  // (used by the nav) working by routing it through the hash too.
-  useEffect(() => {
-    const sync = () => setActiveTool(toolFromHash());
-    sync(); // honor deep links present on first load
-    window.addEventListener('hashchange', sync);
-
-    const openFromEvent = (e: Event) => {
-      const tool = (e as CustomEvent<ToolType>).detail;
-      if ((TOOL_ROUTES as string[]).includes(tool)) openTool(tool);
-    };
-    window.addEventListener('thaw:open-tool', openFromEvent);
-
-    return () => {
-      window.removeEventListener('hashchange', sync);
-      window.removeEventListener('thaw:open-tool', openFromEvent);
-    };
-  }, [openTool]);
 
   const tools = [
     {
@@ -132,8 +88,8 @@ export default function ToolsSection() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.5, ease: "easeOut" }
     }
@@ -142,7 +98,7 @@ export default function ToolsSection() {
   return (
     <section id="tools" ref={containerRef} className="py-32 md:py-64 px-5 sm:px-8 bg-void-canvas relative overflow-hidden scroll-mt-24">
       {/* Background decoration */}
-      <motion.div 
+      <motion.div
         style={{ y: yParallax }}
         className="absolute top-0 right-0 p-32 text-charcoal-plate/10 pointer-events-none ornamental text-[600px] leading-none uppercase select-none"
       >
@@ -153,13 +109,13 @@ export default function ToolsSection() {
         <div className="flex flex-col md:flex-row justify-between items-end gap-10 md:gap-16 mb-24 md:mb-48">
           <div className="max-w-3xl">
              <div className="flex items-center gap-4 mb-6">
-               <motion.div 
+               <motion.div
                 initial={{ width: 0 }}
                 whileInView={{ width: 48 }}
                 transition={{ duration: 1 }}
-                className="h-[1px] bg-arterial-red" 
+                className="h-[1px] bg-arterial-red"
                />
-               <motion.span 
+               <motion.span
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 1 }}
@@ -180,7 +136,7 @@ export default function ToolsSection() {
                </h2>
              </div>
           </div>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -227,15 +183,6 @@ export default function ToolsSection() {
           ))}
         </div>
       </div>
-
-      <AnimatePresence>
-        {activeTool && (
-          <DiagnosticTool
-            tool={TOOLS_DATA[activeTool]}
-            onClose={closeTool}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 }

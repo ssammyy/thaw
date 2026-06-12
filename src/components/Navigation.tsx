@@ -6,6 +6,8 @@
 import { ArrowUpRight, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { openTool } from '../useToolRoute';
+import { ToolType } from '../types';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -64,13 +66,12 @@ export default function Navigation() {
       window.open(item.target, '_blank', 'noopener,noreferrer');
       return;
     }
-    document.querySelector(item.target)?.scrollIntoView({ behavior: 'smooth' });
+    // A diagnostic navigates to its own full page; everything else scrolls.
     if (item.tool) {
-      // Open the specific diagnostic once the scroll is underway
-      window.setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('thaw:open-tool', { detail: item.tool }));
-      }, 600);
+      openTool(item.tool as ToolType);
+      return;
     }
+    document.querySelector(item.target)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (

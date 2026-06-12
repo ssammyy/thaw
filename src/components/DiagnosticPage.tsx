@@ -5,32 +5,28 @@
 
 import { motion, AnimatePresence } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { DiagnosticToolData } from '../types';
+import Footer from './Footer';
 
-interface DiagnosticToolProps {
+interface DiagnosticPageProps {
   tool: DiagnosticToolData;
-  onClose: () => void;
+  onExit: () => void;
 }
 
-export default function DiagnosticTool({ tool, onClose }: DiagnosticToolProps) {
+export default function DiagnosticPage({ tool, onExit }: DiagnosticPageProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [showResult, setShowResult] = useState(false);
 
-  // Close on Escape + lock background scroll while modal is open
+  // Land at the top of the page whenever a different diagnostic is opened, and
+  // reset progress so each tool route starts clean.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [onClose]);
+    window.scrollTo({ top: 0 });
+    setCurrentStep(0);
+    setAnswers([]);
+    setShowResult(false);
+  }, [tool.id]);
 
   const handleAnswer = (value: number) => {
     const newAnswers = [...answers];
@@ -54,37 +50,38 @@ export default function DiagnosticTool({ tool, onClose }: DiagnosticToolProps) {
   const outcome = result ? tool.outcomes.find(o => o.id === result.outcomeId) : null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      role="dialog"
-      aria-modal="true"
-      aria-label={tool.title}
-      className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 md:p-8 bg-void-canvas/95 backdrop-blur-md"
-    >
-      <div className="relative w-full max-w-4xl bg-charcoal-plate border border-ash/20 rounded-none sm:rounded-xl overflow-hidden glass-edge flex flex-col h-full max-h-full sm:h-auto sm:max-h-[90dvh]">
-        {/* Header */}
-        <div className="flex justify-between items-center gap-4 p-5 md:p-8 border-b border-ash/10 shrink-0">
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="w-4 h-4 bg-arterial-red rounded-full shadow-[0_0_10px_rgba(254,30,52,0.5)] shrink-0" />
-            <div className="min-w-0">
-              <span className="text-caption text-ash block mb-1">active diagnostic</span>
-              <h2 className="text-subheading text-bone-white truncate">{tool.title}</h2>
-            </div>
-          </div>
+    <main className="bg-void-canvas min-h-screen selection:bg-arterial-red selection:text-bone-white flex flex-col">
+      {/* Page header — doubles as the site brand and the way back */}
+      <header className="sticky top-0 z-40 bg-void-canvas/90 backdrop-blur-md border-b border-ash/10">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-5 flex justify-between items-center gap-4">
           <button
-            onClick={onClose}
-            aria-label="Exit diagnostic"
-            className="flex items-center justify-center gap-3 min-w-[44px] min-h-[44px] shrink-0 px-3 -mr-2 rounded-lg text-pebble hover:text-bone-white hover:bg-void-canvas/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-arterial-red transition-all"
+            onClick={onExit}
+            aria-label="Back to THAW home"
+            className="flex flex-col cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-arterial-red rounded-sm"
           >
-            <span className="hidden md:inline text-caption uppercase">Exit Protocol</span>
-            <X size={22} aria-hidden="true" />
+            <h1 className="text-heading-sm font-bold tracking-tighter text-bone-white leading-none">THAW</h1>
           </button>
-        </div>
 
-        <div className="flex-grow overflow-y-auto overscroll-contain">
-          <div className="p-6 md:p-12 sm:min-h-[500px] min-h-full flex flex-col justify-center">
+          <div className="flex items-center gap-5 min-w-0">
+            <div className="hidden sm:block min-w-0 text-right">
+              <span className="text-caption text-ash block mb-1">active diagnostic</span>
+              <span className="text-subheading text-bone-white truncate block">{tool.title}</span>
+            </div>
+            <button
+              onClick={onExit}
+              aria-label="Exit diagnostic"
+              className="flex items-center gap-3 min-h-[44px] shrink-0 px-4 rounded-lg border border-ash/20 text-pebble hover:text-bone-white hover:border-arterial-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-arterial-red transition-all"
+            >
+              <ArrowLeft size={18} aria-hidden="true" />
+              <span className="text-caption uppercase">Back to site</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Diagnostic body */}
+      <div className="flex-grow w-full">
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 py-16 md:py-28 min-h-[70vh] flex flex-col justify-center">
           {!showResult ? (
             <>
               {/* Progress */}
@@ -94,7 +91,7 @@ export default function DiagnosticTool({ tool, onClose }: DiagnosticToolProps) {
                   <span>{currentStep + 1} / {tool.questions.length}</span>
                 </div>
                 <div className="h-[1px] bg-iron/30 w-full">
-                  <motion.div 
+                  <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${((currentStep + 1) / tool.questions.length) * 100}%` }}
                     className="h-full bg-arterial-red"
@@ -161,7 +158,7 @@ export default function DiagnosticTool({ tool, onClose }: DiagnosticToolProps) {
                 <div className="w-24 h-[1px] bg-arterial-red mx-auto mb-8" />
                 <h3 className="text-caption text-pebble tracking-[0.5em]">Verdict Protocol</h3>
               </div>
-              
+
               <h2 className="text-display mb-8 tracking-tighter text-bone-white lowercase">{outcome?.title}</h2>
               <div className="w-full h-[1px] bg-iron/10 mb-12" />
 
@@ -175,7 +172,7 @@ export default function DiagnosticTool({ tool, onClose }: DiagnosticToolProps) {
                 </p>
               )}
 
-              <div className="grid md:grid-cols-2 gap-12 text-left max-w-4xl mx-auto mb-20">
+              <div className="grid md:grid-cols-2 gap-12 text-left max-w-4xl mx-auto mb-12">
                 <div className="border border-arterial-red/30 p-10 rounded-lg bg-charcoal-plate/30 glass-edge">
                   <h4 className="text-caption text-arterial-red mb-8 border-b border-arterial-red/10 pb-4 font-bold">Priority Remediation</h4>
                   <div className="grid gap-6">
@@ -187,7 +184,7 @@ export default function DiagnosticTool({ tool, onClose }: DiagnosticToolProps) {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="flex flex-col justify-center gap-8">
                   <div className="flex flex-col gap-2">
                     <span className="text-caption text-pebble">Risk Coefficient</span>
@@ -215,19 +212,30 @@ export default function DiagnosticTool({ tool, onClose }: DiagnosticToolProps) {
                     </div>
                   )}
                   <div className="h-[1px] bg-iron/10" />
-                  <button
-                    onClick={onClose}
-                    className="p-6 bg-bone-white text-void-canvas text-caption font-bold tracking-[0.2em] rounded-lg hover:bg-arterial-red hover:text-bone-white transition-all text-center"
-                  >
-                    EXFILTRATE SESSION
-                  </button>
                 </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
+                <button
+                  onClick={reset}
+                  className="flex-1 p-6 border border-ash/20 text-bone-white text-caption font-bold tracking-[0.2em] rounded-lg hover:border-arterial-red transition-all text-center uppercase"
+                >
+                  Run Again
+                </button>
+                <button
+                  onClick={onExit}
+                  className="flex-1 p-6 bg-bone-white text-void-canvas text-caption font-bold tracking-[0.2em] rounded-lg hover:bg-arterial-red hover:text-bone-white transition-all text-center"
+                >
+                  EXFILTRATE SESSION
+                </button>
               </div>
             </motion.div>
           )}
-          </div>
         </div>
       </div>
-    </motion.div>
+
+      <Footer />
+    </main>
   );
 }
