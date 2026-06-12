@@ -16,7 +16,9 @@ interface DiagnosticPageProps {
 
 export default function DiagnosticPage({ tool, onExit }: DiagnosticPageProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
+  // One selected option index per question (undefined until answered). Stored as
+  // indices so a choice stays highlighted and editable when navigating back.
+  const [selected, setSelected] = useState<(number | undefined)[]>([]);
   const [showResult, setShowResult] = useState(false);
 
   // Land at the top of the page whenever a different diagnostic is opened, and
@@ -24,28 +26,42 @@ export default function DiagnosticPage({ tool, onExit }: DiagnosticPageProps) {
   useEffect(() => {
     window.scrollTo({ top: 0 });
     setCurrentStep(0);
-    setAnswers([]);
+    setSelected([]);
     setShowResult(false);
   }, [tool.id]);
 
-  const handleAnswer = (value: number) => {
-    const newAnswers = [...answers];
-    newAnswers[currentStep] = value;
-    setAnswers(newAnswers);
+  const isLast = currentStep === tool.questions.length - 1;
+  const canGoNext = selected[currentStep] !== undefined;
 
-    if (currentStep < tool.questions.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      setShowResult(true);
-    }
+  const selectOption = (idx: number) => {
+    setSelected(prev => {
+      const next = [...prev];
+      next[currentStep] = idx;
+      return next;
+    });
+  };
+
+  const goNext = () => {
+    if (!canGoNext) return;
+    if (isLast) setShowResult(true);
+    else setCurrentStep(s => s + 1);
+  };
+
+  const goBack = () => {
+    if (currentStep > 0) setCurrentStep(s => s - 1);
   };
 
   const reset = () => {
     setCurrentStep(0);
-    setAnswers([]);
+    setSelected([]);
     setShowResult(false);
   };
 
+  // calculateResult expects option values in question order; every step is
+  // answered by the time the verdict shows (Next is gated on each question).
+  const answers = showResult
+    ? tool.questions.map((q, step) => q.options[selected[step] ?? 0].value)
+    : [];
   const result = showResult ? tool.calculateResult(answers) : null;
   const outcome = result ? tool.outcomes.find(o => o.id === result.outcomeId) : null;
 
@@ -126,27 +142,61 @@ export default function DiagnosticPage({ tool, onExit }: DiagnosticPageProps) {
                   </h3>
 
                   <div className="grid grid-cols-1 gap-3">
-                    {tool.questions[currentStep].options.map((option, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => handleAnswer(option.value)}
-                        className="group relative flex items-center gap-6 px-6 py-4 border border-iron/20 rounded-lg bg-void-canvas hover:border-arterial-red transition-all text-left overflow-hidden"
-                      >
-                        <span className="text-caption text-pebble opacity-50 group-hover:opacity-100 group-hover:text-arterial-red shrink-0">
-                          0{idx + 1}
-                        </span>
-                        <span className="text-body text-bone-white transition-colors leading-tight uppercase font-bold flex-grow">
-                          {option.label}
-                        </span>
-                        <ArrowRight
-                          size={16}
-                          className="text-arterial-red shrink-0 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all"
-                        />
-                      </button>
-                    ))}
+                    {tool.questions[currentStep].options.map((option, idx) => {
+                      const isSelected = selected[currentStep] === idx;
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => selectOption(idx)}
+                          aria-pressed={isSelected}
+                          className={`group relative flex items-center gap-6 px-6 py-4 border rounded-lg transition-all text-left overflow-hidden ${
+                            isSelected
+                              ? 'border-arterial-red bg-arterial-red/10'
+                              : 'border-iron/20 bg-void-canvas hover:border-arterial-red'
+                          }`}
+                        >
+                          <span className={`text-caption shrink-0 transition-colors ${
+                            isSelected
+                              ? 'text-arterial-red'
+                              : 'text-pebble opacity-50 group-hover:opacity-100 group-hover:text-arterial-red'
+                          }`}>
+                            0{idx + 1}
+                          </span>
+                          <span className="text-body text-bone-white transition-colors leading-tight uppercase font-bold flex-grow">
+                            {option.label}
+                          </span>
+                          <ArrowRight
+                            size={16}
+                            className={`text-arterial-red shrink-0 transition-all ${
+                              isSelected
+                                ? 'translate-x-0 opacity-100'
+                                : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
+                            }`}
+                          />
+                        </button>
+                      );
+                    })}
                   </div>
                 </motion.div>
               </AnimatePresence>
+
+              {/* Step navigation */}
+              <div className="mt-12 flex items-center justify-between gap-4">
+                <button
+                  onClick={goBack}
+                  disabled={currentStep === 0}
+                  className="flex items-center gap-3 px-6 py-4 rounded-lg border border-iron/20 text-pebble text-caption uppercase tracking-widest hover:text-bone-white hover:border-arterial-red disabled:opacity-30 disabled:pointer-events-none transition-all"
+                >
+                  <ArrowLeft size={16} aria-hidden="true" /> Back
+                </button>
+                <button
+                  onClick={goNext}
+                  disabled={!canGoNext}
+                  className="flex items-center gap-3 px-8 py-4 rounded-lg bg-bone-white text-void-canvas text-caption font-bold uppercase tracking-widest hover:bg-arterial-red hover:text-bone-white disabled:opacity-30 disabled:pointer-events-none transition-all"
+                >
+                  {isLast ? 'Get Verdict' : 'Next'} <ArrowRight size={16} aria-hidden="true" />
+                </button>
+              </div>
             </>
           ) : (
             <motion.div
