@@ -4,11 +4,21 @@
  */
 
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { ShieldAlert, TrendingUp, RotateCcw, ArrowUpRight } from 'lucide-react';
 import { TOOLS_DATA } from '../data/diagnosticData';
 import { ToolType } from '../types';
 import DiagnosticTool from './DiagnosticTool';
+
+// Each scoring tool gets its own hash route, e.g. "#/vulnerability".
+// Hash routing keeps deep links working on any static host with no server
+// rewrites, and the "#/" prefix never collides with the "#tools" scroll anchor.
+const TOOL_ROUTES: ToolType[] = ['vulnerability', 'investment', 'recovery'];
+
+function toolFromHash(): ToolType | null {
+  const slug = window.location.hash.replace(/^#\/?/, '');
+  return (TOOL_ROUTES as string[]).includes(slug) ? (slug as ToolType) : null;
+}
 
 function ScrollRevealWords({ text, progress, range }: { text: string, progress: any, range: [number, number] }) {
   const words = text.split(" ");
@@ -49,17 +59,37 @@ export default function ToolsSection() {
 
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
-  // Allow navigation (or anything else) to deep-link into a specific diagnostic
-  useEffect(() => {
-    const openTool = (e: Event) => {
-      const tool = (e as CustomEvent<ToolType>).detail;
-      if (tool === 'vulnerability' || tool === 'investment' || tool === 'recovery') {
-        setActiveTool(tool);
-      }
-    };
-    window.addEventListener('thaw:open-tool', openTool);
-    return () => window.removeEventListener('thaw:open-tool', openTool);
+  // Opening a tool just sets the hash route; the hashchange listener below is the
+  // single source of truth that maps the URL to the active tool. This makes each
+  // tool shareable/bookmarkable and lets the browser Back button close the modal.
+  const openTool = useCallback((tool: ToolType) => {
+    window.location.hash = `/${tool}`;
   }, []);
+
+  // Closing strips the hash entirely (no bare "#", no extra history entry).
+  const closeTool = useCallback(() => {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    setActiveTool(null);
+  }, []);
+
+  // Sync the active tool to the URL hash, and keep the in-app deep-link event
+  // (used by the nav) working by routing it through the hash too.
+  useEffect(() => {
+    const sync = () => setActiveTool(toolFromHash());
+    sync(); // honor deep links present on first load
+    window.addEventListener('hashchange', sync);
+
+    const openFromEvent = (e: Event) => {
+      const tool = (e as CustomEvent<ToolType>).detail;
+      if ((TOOL_ROUTES as string[]).includes(tool)) openTool(tool);
+    };
+    window.addEventListener('thaw:open-tool', openFromEvent);
+
+    return () => {
+      window.removeEventListener('hashchange', sync);
+      window.removeEventListener('thaw:open-tool', openFromEvent);
+    };
+  }, [openTool]);
 
   const tools = [
     {
@@ -171,7 +201,7 @@ export default function ToolsSection() {
               viewport={{ once: true, margin: "-100px" }}
               variants={cardVariants}
               className="p-8 md:p-14 border border-iron/10 rounded-lg bg-charcoal-plate/10 backdrop-blur-sm group hover:border-arterial-red/30 hover:bg-charcoal-plate/20 transition-all duration-500 cursor-pointer flex flex-col justify-between min-h-[400px] md:min-h-[500px]"
-              onClick={() => setActiveTool(tool.id)}
+              onClick={() => openTool(tool.id)}
             >
               <div>
                 <div className="mb-14 flex justify-between items-start">
@@ -200,9 +230,9 @@ export default function ToolsSection() {
 
       <AnimatePresence>
         {activeTool && (
-          <DiagnosticTool 
-            tool={TOOLS_DATA[activeTool]} 
-            onClose={() => setActiveTool(null)} 
+          <DiagnosticTool
+            tool={TOOLS_DATA[activeTool]}
+            onClose={closeTool}
           />
         )}
       </AnimatePresence>
