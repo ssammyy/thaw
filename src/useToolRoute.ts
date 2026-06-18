@@ -30,6 +30,35 @@ export function closeTool() {
   window.dispatchEvent(new HashChangeEvent('hashchange'));
 }
 
+// Static content pages (e.g. the author bio) live on the same hash scheme as the
+// tools — "#/about" — so they deep-link cleanly on any static host too.
+export const PAGE_ROUTES = ['about'] as const;
+export type PageRoute = (typeof PAGE_ROUTES)[number];
+
+export function pageFromHash(): PageRoute | null {
+  const slug = window.location.hash.replace(/^#\/?/, '');
+  return (PAGE_ROUTES as readonly string[]).includes(slug) ? (slug as PageRoute) : null;
+}
+
+export function openPage(page: PageRoute) {
+  window.location.hash = `/${page}`;
+  window.scrollTo({ top: 0 });
+}
+
+// Resolves the current hash to the active content page (or null for the landing
+// page / a tool route). Shares the close/back behaviour with the tools via closeTool.
+export function usePageRoute(): PageRoute | null {
+  const [page, setPage] = useState<PageRoute | null>(() => pageFromHash());
+
+  useEffect(() => {
+    const sync = () => setPage(pageFromHash());
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
+
+  return page;
+}
+
 // Resolves the current hash to the active tool (or null for the landing page),
 // staying in sync with the back/forward buttons and the nav's deep-link event.
 export function useToolRoute(): ToolType | null {

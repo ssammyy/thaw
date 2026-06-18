@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { openTool } from '../useToolRoute';
 import { ToolType } from '../types';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -105,7 +106,9 @@ export default function Navigation() {
           ))}
         </div>
 
-        <div className="flex items-center gap-4 sm:gap-6">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <ThemeToggle />
+
           {/* Primary CTA — enroll in the masterclass (the site's main goal) */}
           <button
             onClick={() => {

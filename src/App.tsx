@@ -20,12 +20,14 @@ import TransitionMoment from './components/TransitionMoment';
 import Footer from './components/Footer';
 import MobileEnrollBar from './components/MobileEnrollBar';
 import DiagnosticPage from './components/DiagnosticPage';
+import AboutPage from './components/AboutPage';
 import { motion, useScroll, useSpring } from 'motion/react';
-import { useToolRoute, closeTool } from './useToolRoute';
+import { useToolRoute, usePageRoute, closeTool } from './useToolRoute';
 import { TOOLS_DATA } from './data/diagnosticData';
 
 export default function App() {
   const activeTool = useToolRoute();
+  const activePage = usePageRoute();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -36,6 +38,11 @@ export default function App() {
   // A tool route renders as its own full page rather than a modal over the landing.
   if (activeTool) {
     return <DiagnosticPage tool={TOOLS_DATA[activeTool]} onExit={closeTool} />;
+  }
+
+  // Content pages (the author bio) are their own full pages on the same scheme.
+  if (activePage === 'about') {
+    return <AboutPage onExit={closeTool} />;
   }
 
   return (

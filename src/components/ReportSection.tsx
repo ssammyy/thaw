@@ -9,7 +9,11 @@ import { motion } from 'motion/react';
 export default function ReportSection() {
   return (
     <section id="report" className="py-24 md:py-48 px-5 sm:px-8 bg-void-canvas scroll-mt-24">
-       <div className="max-w-[1400px] mx-auto bg-linen rounded-xl p-6 sm:p-12 lg:p-32 flex flex-col md:flex-row items-center gap-12 md:gap-24 overflow-hidden relative shadow-2xl">
+       {/* Deliberately inverted feature panel: a light card on the dark page, and
+           its mirror — a dark card on the light page — so it reads as a feature in
+           both themes. The void-canvas/bone-white text tokens resolve correctly
+           against each background, so only the panel surface needs flipping. */}
+       <div className="max-w-[1400px] mx-auto bg-linen light:bg-[#141210] rounded-xl p-6 sm:p-12 lg:p-32 flex flex-col md:flex-row items-center gap-12 md:gap-24 overflow-hidden relative shadow-2xl">
           <div className="absolute top-0 right-0 w-64 h-64 bg-charcoal-plate/5 -translate-y-1/2 translate-x-1/2 rounded-full pointer-events-none" />
           
           <div className="w-full md:w-5/12 flex justify-center">
@@ -39,7 +43,7 @@ export default function ReportSection() {
                 The only comprehensive intelligence report documenting forex, betting, crypto, and MLM predation across six African countries. <span className="font-bold text-void-canvas underline decoration-arterial-red">USD 4.2B in annual extraction.</span>
              </p>
              <div className="flex flex-wrap gap-6">
-                <button className="w-full sm:w-auto justify-center flex items-center gap-4 px-6 py-5 sm:px-10 sm:py-6 bg-void-canvas rounded-lg text-caption text-bone-white hover:bg-absolute-black transition-all shadow-lg group">
+                <button className="w-full sm:w-auto justify-center flex items-center gap-4 px-6 py-5 sm:px-10 sm:py-6 bg-void-canvas rounded-lg text-caption text-bone-white hover:bg-absolute-black light:hover:bg-arterial-red light:hover:text-linen transition-all shadow-lg group">
                     PUBLIC EDITION (FREE) <Download size={18} className="text-arterial-red group-hover:translate-y-1 transition-transform" />
                 </button>
                 <button className="w-full sm:w-auto justify-center flex items-center gap-4 px-6 py-5 sm:px-10 sm:py-6 border border-void-canvas/20 rounded-lg text-caption text-void-canvas hover:border-arterial-red transition-all font-bold group">

@@ -46,9 +46,44 @@
   --shadow-sm: rgba(255, 255, 255, 0.2) 0px 2px 5px 0px inset;
 }
 
+/* ── Theming ──────────────────────────────────────────────────────────────
+   Dark is the default (brand) palette defined in @theme above. Light mode
+   re-points the same color tokens to their light-palette equivalents, so every
+   Tailwind utility that reads var(--color-*) re-themes with no component churn.
+   Roles are preserved: void-canvas = page, charcoal/smoke/graphite = elevated
+   surfaces, bone-white = primary text, ash/pebble = secondary/muted, iron =
+   hairline borders. arterial-red / crimson-pure (brand accents) stay fixed, and
+   linen / absolute-black stay as deliberate inverted accents in both modes.
+   Unlayered so these win over the @theme `:root` defaults. */
+:root { color-scheme: dark; }
+
+/* `light:` variant — target elements only when the light theme is active. Used
+   for the few deliberately-inverted panels that need an explicit light-mode
+   treatment rather than a straight token flip. */
+@custom-variant light (&:is([data-theme="light"] *));
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-void-canvas: #f5f2ee;
+  --color-charcoal-plate: #d8d0c6;
+  --color-smoke-plate: #cfc6bb;
+  --color-graphite-lift: #c2b8ac;
+  --color-bone-white: #17130f;
+  --color-ash: #4d4843;
+  --color-pebble: #6f6a64;
+  --color-iron: #9a938b;
+}
+
 @layer base {
   body {
     @apply bg-void-canvas text-bone-white font-kmr-waldenburg selection:bg-arterial-red selection:text-bone-white antialiased;
+  }
+
+  /* Ease the page background and primary text across a theme switch. Component
+     hover transitions are unaffected (they target their own properties). */
+  body {
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 

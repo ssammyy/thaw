@@ -4,6 +4,7 @@
  */
 
 import { Instagram, Twitter, Linkedin, ArrowUp } from 'lucide-react';
+import { openPage } from '../useToolRoute';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -40,7 +41,13 @@ export default function Footer() {
           <div className="flex flex-col gap-10">
              <span className="text-caption text-bone-white font-bold tracking-[0.3em] uppercase opacity-40">Firm</span>
              <div className="flex flex-col gap-6">
-                {['About Koech', 'Contact', 'Riskily Platform', 'Privacy Protocol'].map(link => (
+                <button
+                  onClick={() => openPage('about')}
+                  className="text-left text-caption text-pebble hover:text-bone-white transition-colors tracking-widest uppercase font-medium"
+                >
+                  About Koech
+                </button>
+                {['Contact', 'Riskily Platform', 'Privacy Protocol'].map(link => (
                   <a key={link} href="#" className="text-caption text-pebble hover:text-bone-white transition-colors tracking-widest uppercase font-medium">{link}</a>
                 ))}
              </div>
