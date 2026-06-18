@@ -8,30 +8,7 @@ import { useRef } from 'react';
 import { ShieldAlert, TrendingUp, RotateCcw, ArrowUpRight } from 'lucide-react';
 import { ToolType } from '../types';
 import { openTool } from '../useToolRoute';
-
-function ScrollRevealWords({ text, progress, range }: { text: string, progress: any, range: [number, number] }) {
-  const words = text.split(" ");
-  return (
-    <>
-      {words.map((word, i) => {
-        const start = range[0] + (i / words.length) * (range[1] - range[0]);
-        const end = range[0] + ((i + 0.5) / words.length) * (range[1] - range[0]);
-        const opacity = useTransform(progress, [start, end], [0.1, 1]);
-        const y = useTransform(progress, [start, end], [10, 0]);
-
-        return (
-          <motion.span
-            key={i}
-            style={{ opacity, y }}
-            className="inline-block mr-[0.25em]"
-          >
-            {word}
-          </motion.span>
-        );
-      })}
-    </>
-  );
-}
+import JourneyConnector from './JourneyConnector';
 
 export default function ToolsSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -40,10 +17,6 @@ export default function ToolsSection() {
     offset: ["start end", "end start"]
   });
 
-  const { scrollYProgress: revealProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "center start"]
-  });
 
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
@@ -96,7 +69,7 @@ export default function ToolsSection() {
   };
 
   return (
-    <section id="tools" ref={containerRef} className="py-32 md:py-64 px-5 sm:px-8 bg-void-canvas relative overflow-hidden scroll-mt-24">
+    <section ref={containerRef} className="py-32 md:py-64 px-5 sm:px-8 bg-void-canvas relative overflow-hidden">
       {/* Background decoration */}
       <motion.div
         style={{ y: yParallax }}
@@ -106,48 +79,26 @@ export default function ToolsSection() {
       </motion.div>
 
       <div className="max-w-[1400px] mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-10 md:gap-16 mb-24 md:mb-48">
-          <div className="max-w-3xl">
-             <div className="flex items-center gap-4 mb-6">
-               <motion.div
-                initial={{ width: 0 }}
-                whileInView={{ width: 48 }}
-                transition={{ duration: 1 }}
-                className="h-[1px] bg-arterial-red"
-               />
-               <motion.span
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-                className="text-caption text-arterial-red font-bold tracking-[0.3em] uppercase"
-               >
-                 active diagnostics
-               </motion.span>
-             </div>
-             <h2 className="text-display-xl leading-[0.85] lowercase">
-                <ScrollRevealWords text="the intelligence" progress={revealProgress} range={[0, 0.4]} />
-             </h2>
-             <div className="flex items-baseline flex-wrap -mt-4 lg:-mt-8">
-               <span className="serif-italic text-heading text-ash/40 mr-6">
-                  <ScrollRevealWords text="interactive" progress={revealProgress} range={[0.4, 0.6]} />
-               </span>
-               <h2 className="text-display-xl leading-[0.85] lowercase">
-                  <ScrollRevealWords text="engine" progress={revealProgress} range={[0.6, 0.8]} />
-               </h2>
-             </div>
+        <div className="flex flex-col mb-16 md:mb-32">
+          <div className="flex items-baseline flex-wrap">
+            <div className="w-24 h-[1px] bg-iron/20" />
           </div>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="text-subheading text-pebble/60 max-w-sm mb-6 leading-tight lowercase"
-          >
-            Frameworks to audit your reality and model your defensive posture.
-          </motion.p>
+          <div className="mt-12">
+            <h2 className="text-display-xl leading-[0.85] lowercase">the</h2>
+            <div className="flex items-baseline flex-wrap -mt-4">
+              <span className="serif-italic text-heading text-ash/60 mr-6">3 module</span>
+              <h2 className="text-display-xl leading-[0.85] lowercase">self-test.</h2>
+            </div>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 md:gap-12">
+        {/* How the tools relate to the book and the masterclass */}
+        <p className="text-body text-ash/80 max-w-2xl leading-relaxed">
+          The tools turn the book's frameworks into something you can act on. Run any one to see where you actually stand — then take the <span className="text-bone-white font-bold">masterclass</span> to close the gaps it exposes.
+        </p>
+        <JourneyConnector active="tools" />
+
+        <div id="tools" className="mt-24 md:mt-32 grid md:grid-cols-3 gap-6 md:gap-12 scroll-mt-32">
           {tools.map((tool, i) => (
             <motion.div
               key={tool.id}
@@ -156,27 +107,37 @@ export default function ToolsSection() {
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               variants={cardVariants}
-              className="p-8 md:p-14 border border-iron/10 rounded-lg bg-charcoal-plate/10 backdrop-blur-sm group hover:border-arterial-red/30 hover:bg-charcoal-plate/20 transition-all duration-500 cursor-pointer flex flex-col justify-between min-h-[400px] md:min-h-[500px]"
+              whileHover={{ y: -8 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className={`relative overflow-hidden p-8 md:p-12 rounded-xl bg-gradient-to-b from-charcoal-plate/80 to-charcoal-plate/20 backdrop-blur-sm group cursor-pointer flex flex-col justify-between min-h-[400px] md:min-h-[500px] transition-[border-color,box-shadow] duration-300 ease-out hover:shadow-[0_24px_60px_-12px_rgba(230,59,78,0.4)] ${
+                i === 0
+                  ? 'border border-arterial-red/40 shadow-[0_12px_40px_-12px_rgba(230,59,78,0.3)]'
+                  : 'border border-iron/25 shadow-[0_10px_34px_rgba(0,0,0,0.45)]'
+              }`}
               onClick={() => openTool(tool.id)}
             >
-              <div>
-                <div className="mb-14 flex justify-between items-start">
-                  <motion.div variants={itemVariants} className="w-14 h-14 flex items-center justify-center border border-iron/20 rounded-lg text-ash group-hover:text-arterial-red group-hover:border-arterial-red transition-all">
+              {/* Ambient hover glow */}
+              <span className="pointer-events-none absolute -top-24 -right-24 w-56 h-56 rounded-full bg-arterial-red/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative">
+                <div className="mb-12 flex justify-between items-start">
+                  <motion.div variants={itemVariants} className="w-14 h-14 flex items-center justify-center rounded-xl border border-arterial-red/25 bg-arterial-red/10 text-arterial-red group-hover:bg-arterial-red group-hover:text-bone-white group-hover:border-arterial-red group-hover:scale-105 transition-all duration-300">
                     {tool.icon}
                   </motion.div>
-                  <motion.span variants={itemVariants} className="text-caption text-ash/40 tracking-widest font-medium">0{i + 1}</motion.span>
+
                 </div>
                 <motion.span variants={itemVariants} className="text-caption text-pebble block mb-3 tracking-[0.2em] uppercase font-bold">{tool.subtitle}</motion.span>
-                <motion.h3 variants={itemVariants} className="text-heading text-bone-white mb-8 group-hover:text-bone-white transition-colors lowercase leading-tight">{tool.title}</motion.h3>
+                <motion.h3 variants={itemVariants} className="text-heading text-bone-white mb-8 transition-colors lowercase leading-tight">{tool.title}</motion.h3>
                 <motion.p variants={itemVariants} className="text-body text-ash leading-relaxed max-w-[28ch]">
                   {tool.description}
                 </motion.p>
               </div>
 
-              <motion.div variants={itemVariants} className="mt-16 pt-10 border-t border-iron/10 flex items-center justify-between group/action">
-                <span className="text-caption font-bold tracking-[0.3em] uppercase text-ash group-hover:text-bone-white transition-colors">Initialize</span>
-                <div className="w-10 h-10 flex items-center justify-center rounded-full border border-iron/20 group-hover:bg-arterial-red group-hover:border-arterial-red transition-all">
-                  <ArrowUpRight size={18} className="text-ash group-hover:text-bone-white transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              {/* Rest-state click affordance — visible without hover for touch users */}
+              <motion.div variants={itemVariants} className="relative mt-16 pt-8 border-t border-iron/15 flex items-center justify-between">
+                <span className="text-caption font-bold tracking-[0.25em] uppercase text-bone-white">Run free tool</span>
+                <div className="w-11 h-11 flex items-center justify-center rounded-full bg-bone-white text-void-canvas group-hover:bg-arterial-red group-hover:text-bone-white transition-colors duration-300">
+                  <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
               </motion.div>
             </motion.div>

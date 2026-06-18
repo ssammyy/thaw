@@ -5,6 +5,10 @@
 
 import { Check, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import JourneyConnector from './JourneyConnector';
+
+// TODO: replace with the live Selar enrollment link for the masterclass.
+const ENROLL_URL = 'https://selar.co/';
 
 export default function MasterclassSection() {
   return (
@@ -12,7 +16,6 @@ export default function MasterclassSection() {
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col mb-16 md:mb-32">
           <div className="flex items-baseline flex-wrap">
-             <span className="text-caption text-ash tracking-[0.3em] font-medium mr-8">COMPLETE FINANCIAL INTELLIGENCE</span>
              <div className="w-24 h-[1px] bg-iron/20" />
           </div>
           <div className="mt-12">
@@ -27,13 +30,18 @@ export default function MasterclassSection() {
           <p className="text-body text-ash/80 max-w-xl mt-16 leading-relaxed">
             The book establishes the argument. The masterclass gives you the <span className="text-bone-white font-bold italic">frameworks, tools, and assignments</span> to apply it to your own structural financial decisions.
           </p>
+
+          {/* Where it fits — Book → Tools → Masterclass */}
+          <JourneyConnector active="masterclass" />
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 md:gap-16">
-           <motion.div 
+           <motion.div
              initial={{ opacity: 0, x: -20 }}
              whileInView={{ opacity: 1, x: 0 }}
-             className="p-6 sm:p-12 border border-ash/10 rounded-lg bg-charcoal-plate/30 glass-edge"
+             whileHover={{ y: -8 }}
+             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+             className="p-6 sm:p-12 border border-ash/10 rounded-lg bg-charcoal-plate/30 glass-edge transition-[border-color,box-shadow] duration-300 ease-out hover:shadow-[0_24px_60px_-12px_rgba(230,59,78,0.4)]"
            >
               <h3 className="text-caption text-pebble mb-12 tracking-widest uppercase">Curriculum Architecture</h3>
               <ul className="grid gap-10">
@@ -69,7 +77,8 @@ export default function MasterclassSection() {
              whileInView={{ opacity: 1, x: 0 }}
              viewport={{ once: true }}
              transition={{ delay: 1.5, duration: 1, ease: "easeOut" }}
-             className="p-6 sm:p-12 border border-arterial-red rounded-lg bg-void-canvas glass-edge relative flex flex-col justify-between shadow-[0_0_50px_rgba(254,30,52,0.1)]"
+             whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 25 } }}
+             className="p-6 sm:p-12 border border-arterial-red/70 rounded-lg bg-charcoal-plate/40 glass-edge relative flex flex-col justify-between shadow-[0_0_60px_rgba(230,59,78,0.07)] transition-[box-shadow] duration-300 ease-out hover:shadow-[0_24px_60px_-12px_rgba(230,59,78,0.4)]"
            >
               <div className="absolute top-0 right-12 -translate-y-1/2 bg-arterial-red px-6 py-2 rounded-full text-[10px] font-bold text-bone-white tracking-widest">
                 FOUNDING MEMBER OFFER
@@ -99,9 +108,14 @@ export default function MasterclassSection() {
                 </ul>
               </div>
 
-              <button className="w-full flex justify-between items-center p-6 sm:p-8 bg-bone-white text-void-canvas rounded-lg text-caption font-bold tracking-[0.2em] hover:bg-arterial-red hover:text-bone-white transition-all shadow-2xl group">
+              <a
+                href={ENROLL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex justify-between items-center p-6 sm:p-8 bg-bone-white text-void-canvas rounded-lg text-caption font-bold tracking-[0.2em] hover:bg-arterial-red hover:text-bone-white transition-colors duration-200 shadow-2xl cursor-pointer group"
+              >
                 ENROLL ON SELAR <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </button>
+              </a>
            </motion.div>
         </div>
       </div>

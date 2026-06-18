@@ -3,18 +3,21 @@
 
 @theme {
   /* Colors */
-  --color-void-canvas: #080808;
+  /* Canvas warmed + lifted off pure black: reads as deep charcoal, not a void.
+     Softens the "dark and grim" feel without abandoning the dark editorial brand. */
+  --color-void-canvas: #141210;
   --color-absolute-black: #000000;
-  --color-charcoal-plate: #171617;
-  --color-smoke-plate: #262525;
-  --color-graphite-lift: #393939;
+  --color-charcoal-plate: #1f1c19;
+  --color-smoke-plate: #2a2724;
+  --color-graphite-lift: #3d3a36;
   --color-bone-white: #fcfcfc;
   --color-linen: #f3efef;
   --color-ash: #d4d2d2;
   --color-pebble: #b5b2b2;
-  --color-iron: #525252;
-  --color-arterial-red: #fe1e34;
-  --color-crimson-pure: #ff0000;
+  --color-iron: #5a5650;
+  /* Red pulled slightly off neon to feel considered rather than aggressive. */
+  --color-arterial-red: #e63b4e;
+  --color-crimson-pure: #f02d3a;
 
   /* Typography — Font Families */
   --font-kmr-waldenburg: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -50,6 +53,15 @@
 }
 
 @layer utilities {
+  /* Hide scrollbars while keeping the element scrollable (used by the mobile journey carousel). */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Typography Scale from design.md */
   .text-display-xl {
     @apply text-[48px] sm:text-[80px] md:text-[120px] lg:text-[160px];
@@ -132,6 +144,19 @@
   .ornamental {
     font-family: var(--font-dirtyline);
     letter-spacing: -0.100em;
+  }
+}
+
+/* Respect users who ask for less motion: neutralise transitions/animations
+   while keeping content fully visible. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

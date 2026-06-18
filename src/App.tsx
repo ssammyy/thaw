@@ -18,6 +18,7 @@ import ReportSection from './components/ReportSection';
 import ToolsSection from './components/ToolsSection';
 import TransitionMoment from './components/TransitionMoment';
 import Footer from './components/Footer';
+import MobileEnrollBar from './components/MobileEnrollBar';
 import DiagnosticPage from './components/DiagnosticPage';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { useToolRoute, closeTool } from './useToolRoute';
@@ -61,8 +62,6 @@ export default function App() {
 
         <QuoteSection />
 
-        <ToolsSection />
-
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -71,6 +70,8 @@ export default function App() {
         >
           <BookSection />
         </motion.div>
+
+        <ToolsSection />
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -93,7 +94,7 @@ export default function App() {
         <Footer />
       </div>
 
-
+      <MobileEnrollBar />
     </main>
   );
 }

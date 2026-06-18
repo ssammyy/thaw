@@ -105,19 +105,20 @@ export default function Navigation() {
           ))}
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* Primary CTA — enroll in the masterclass (the site's main goal) */}
           <button
             onClick={() => {
               setActiveCategory(null);
               setMobileMenuOpen(false);
-              document.querySelector('#book')?.scrollIntoView({ behavior: 'smooth' });
+              document.querySelector('#masterclass')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="hidden sm:flex px-6 py-3 border border-ash/30 rounded-lg text-caption text-bone-white hover:border-arterial-red group transition-all items-center gap-2"
+            className="flex px-4 sm:px-6 py-2.5 sm:py-3 bg-bone-white text-void-canvas rounded-lg text-caption font-bold tracking-[0.12em] uppercase hover:bg-arterial-red hover:text-bone-white group transition-colors duration-200 cursor-pointer items-center gap-2"
           >
-            Get a Copy <ArrowUpRight size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            Enroll <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
-          
-          <button 
+
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Open menu" className="lg:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-bone-white"
           >

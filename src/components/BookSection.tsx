@@ -5,12 +5,35 @@
 
 import { ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import JourneyConnector from './JourneyConnector';
 
 export default function BookSection() {
   return (
     <section id="book" className="py-32 md:py-64 px-5 sm:px-8 bg-charcoal-plate/10 scroll-mt-24">
-      <div className="max-w-[1400px] mx-auto grid md:grid-cols-2 gap-12 md:gap-24 items-center">
-        <motion.div 
+      <div className="max-w-[1400px] mx-auto">
+        <div className="flex flex-col mb-16 md:mb-32">
+          <div className="flex items-baseline flex-wrap">
+            <div className="w-24 h-[1px] bg-iron/20" />
+          </div>
+          <div className="mt-12">
+            <h2 className="text-display-xl leading-[0.85] lowercase">the</h2>
+            <div className="flex items-baseline flex-wrap -mt-4">
+              <span className="serif-italic text-heading text-ash/60 mr-6">insider's</span>
+              <h2 className="text-display-xl leading-[0.85] lowercase">playbook.</h2>
+            </div>
+          </div>
+
+          {/* How the book relates to the rest of the site */}
+          <p className="text-body text-ash/80 max-w-2xl mt-12 leading-relaxed">
+            The book is where it begins — the full insider dissection of how forex, betting, crypto and MLM systems are engineered to <span className="text-bone-white font-bold">extract, not create</span>. The free tools let you test that thinking against your own situation, and the masterclass turns it into a practical, step-by-step defense.
+          </p>
+
+          {/* Where it fits — Book → Tools → Masterclass */}
+          <JourneyConnector active="book" />
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
+        <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -86,6 +109,7 @@ export default function BookSection() {
             <span className="text-caption font-bold border-b border-bone-white pb-1 group-hover:border-arterial-red transition-all uppercase">SECURE YOUR COPY </span>
             <ArrowUpRight size={20} className="group-hover:text-arterial-red group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
           </motion.button>
+        </div>
         </div>
       </div>
     </section>
