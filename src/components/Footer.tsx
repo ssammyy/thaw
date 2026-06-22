@@ -12,7 +12,7 @@ export default function Footer() {
   };
 
   return (
-    <footer id="network" className="bg-charcoal-plate pt-24 md:pt-48 pb-16 px-5 sm:px-8 border-t border-iron/10 scroll-mt-24">
+    <footer id="network" className="bg-charcoal-plate pt-24 md:pt-48 pb-16 px-5 sm:px-8 border-t border-iron/10 scroll-mt-24 md:sticky md:bottom-0 md:z-0">
       <div className="max-w-[1400px] mx-auto">
         <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-12 md:gap-16 mb-24 md:mb-48 items-start">
           <div className="sm:col-span-2 md:col-span-2">
@@ -47,9 +47,7 @@ export default function Footer() {
                 >
                   About Koech
                 </button>
-                {['Contact', 'Riskily Platform', 'Privacy Protocol'].map(link => (
-                  <a key={link} href="#" className="text-caption text-pebble hover:text-bone-white transition-colors tracking-widest uppercase font-medium">{link}</a>
-                ))}
+
              </div>
           </div>
 

@@ -18,8 +18,8 @@ const STEPS: {
   target: string;
   action: string;
 }[] = [
-  { id: 'book', num: '01', label: 'THE BOOK', name: 'the house always wins', journeyTitle: 'the diagnosis', desc: 'How the house is built to win — and what to do instead.', target: '#book', action: 'Read' },
-  { id: 'tools', num: '02', label: 'THE TOOLS', name: 'the intelligence engine', journeyTitle: 'the test', desc: 'Measure your own exposure in 60 seconds — free.', target: '#tools', action: 'Explore' },
+  { id: 'tools', num: '01', label: 'FREE TOOLS', name: 'the intelligence engine', journeyTitle: 'the test', desc: 'Measure your own exposure in 60 seconds — free.', target: '#tools', action: 'Explore' },
+  { id: 'book', num: '02', label: 'THE BOOK', name: 'the house always wins', journeyTitle: 'the diagnosis', desc: 'How the house is built to win — and what to do instead.', target: '#book', action: 'Read' },
   { id: 'masterclass', num: '03', label: 'THE MASTERCLASS', name: 'the masterclass', journeyTitle: 'the defense', desc: 'Turn the argument into a step-by-step playbook.', target: '#masterclass', action: 'Enroll' },
 ];
 

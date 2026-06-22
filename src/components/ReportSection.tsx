@@ -42,14 +42,20 @@ export default function ReportSection() {
              <p className="text-body text-void-canvas/70 max-w-xl mb-12 leading-relaxed">
                 The only comprehensive intelligence report documenting forex, betting, crypto, and MLM predation across six African countries. <span className="font-bold text-void-canvas underline decoration-arterial-red">USD 4.2B in annual extraction.</span>
              </p>
-             <div className="flex flex-wrap gap-6">
-                <button className="w-full sm:w-auto justify-center flex items-center gap-4 px-6 py-5 sm:px-10 sm:py-6 bg-void-canvas rounded-lg text-caption text-bone-white hover:bg-absolute-black light:hover:bg-arterial-red light:hover:text-linen transition-all shadow-lg group">
-                    PUBLIC EDITION (FREE) <Download size={18} className="text-arterial-red group-hover:translate-y-1 transition-transform" />
-                </button>
-                <button className="w-full sm:w-auto justify-center flex items-center gap-4 px-6 py-5 sm:px-10 sm:py-6 border border-void-canvas/20 rounded-lg text-caption text-void-canvas hover:border-arterial-red transition-all font-bold group">
-                    PREMIUM CASE DATA (KES 3,500) <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-             </div>
+              <div className="flex flex-wrap gap-6">
+                 <button
+                   onClick={() => document.querySelector('#email')?.scrollIntoView({ behavior: 'smooth' })}
+                   className="w-full sm:w-auto justify-center flex items-center gap-4 px-6 py-5 sm:px-10 sm:py-6 bg-void-canvas rounded-lg text-caption text-bone-white hover:bg-absolute-black light:hover:bg-arterial-red light:hover:text-linen transition-all shadow-lg group cursor-pointer"
+                 >
+                     PUBLIC EDITION (FREE) <Download size={18} className="text-arterial-red group-hover:translate-y-1 transition-transform" />
+                 </button>
+                 <button
+                   onClick={() => window.location.href = 'mailto:twentyfourltd@gmail.com?subject=Premium%20Intelligence%20Edition%20Request'}
+                   className="w-full sm:w-auto justify-center flex items-center gap-4 px-6 py-5 sm:px-10 sm:py-6 border border-void-canvas/20 rounded-lg text-caption text-void-canvas hover:border-arterial-red transition-all font-bold group cursor-pointer"
+                 >
+                     PREMIUM CASE DATA (KES 3,500) <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                 </button>
+              </div>
           </div>
        </div>
     </section>

@@ -16,6 +16,7 @@ import BookSection from './components/BookSection';
 import MasterclassSection from './components/MasterclassSection';
 import ReportSection from './components/ReportSection';
 import ToolsSection from './components/ToolsSection';
+import EmailSection from './components/EmailSection';
 import TransitionMoment from './components/TransitionMoment';
 import Footer from './components/Footer';
 import MobileEnrollBar from './components/MobileEnrollBar';
@@ -54,7 +55,7 @@ export default function App() {
 
       <Navigation />
       
-      <div className="">
+      <div className="relative z-10 bg-void-canvas">
         <Hero />
         
         <motion.div
@@ -66,6 +67,7 @@ export default function App() {
           <StatsStrip />
         </motion.div>
 
+        <ToolsSection />
 
         <QuoteSection />
 
@@ -77,8 +79,6 @@ export default function App() {
         >
           <BookSection />
         </motion.div>
-
-        <ToolsSection />
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -98,8 +98,10 @@ export default function App() {
           <ReportSection />
         </motion.div>
 
-        <Footer />
+        <EmailSection />
       </div>
+
+      <Footer />
 
       <MobileEnrollBar />
     </main>

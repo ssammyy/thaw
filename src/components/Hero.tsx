@@ -95,17 +95,17 @@ export default function Hero() {
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-7">
               <button
-                onClick={() => scrollTo('#masterclass')}
+                onClick={() => scrollTo('#tools')}
                 className="flex items-center justify-center gap-3 px-7 py-4 bg-bone-white text-void-canvas rounded-lg text-caption font-bold tracking-[0.15em] uppercase hover:bg-arterial-red hover:text-bone-white transition-colors duration-200 cursor-pointer group"
               >
-                Enroll in the Masterclass
+                Take the free test
                 <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
               <button
-                onClick={() => scrollTo('#tools')}
-                className="flex items-center justify-center gap-2 px-2 py-2 text-caption font-bold tracking-[0.15em] uppercase text-ash hover:text-bone-white transition-colors duration-200 cursor-pointer group"
+                onClick={() => scrollTo('#book')}
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-lg border border-iron/25 text-caption font-bold tracking-[0.15em] uppercase text-ash hover:text-bone-white hover:border-arterial-red transition-all duration-200 cursor-pointer group"
               >
-                Try the free tools
+                Get the book
                 <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
             </div>
