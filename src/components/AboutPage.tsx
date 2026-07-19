@@ -51,7 +51,8 @@ export default function AboutPage({ onExit }: AboutPageProps) {
         </div>
       </header>
 
-      <div className="flex-grow w-full">
+      {/* Content sits above the sticky reveal footer, matching the landing page layering */}
+      <div className="flex-grow w-full relative z-10 bg-void-canvas">
         {/* ── Intro ───────────────────────────────────────────────────────── */}
         <section className="px-5 sm:px-8 pt-20 md:pt-32 pb-24 md:pb-40">
           <div className="max-w-[1400px] mx-auto">

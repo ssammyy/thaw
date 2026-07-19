@@ -6,20 +6,28 @@
 import { useEffect, useState } from 'react';
 import { ToolType } from './types';
 
-// Each scoring tool is its own hash route, e.g. "#/vulnerability". Hash routing
+// Each scoring tool is its own hash route, e.g. "#/vulnerability-diagnostic". Hash routing
 // keeps deep links working on any static host with no server rewrites, and the
 // "#/" prefix never collides with the "#tools" scroll anchor on the landing page.
 export const TOOL_ROUTES: ToolType[] = ['vulnerability', 'investment', 'recovery'];
 
+// URL slugs mirror each tool's full on-page title, e.g. "#/recovery-index".
+// The bare tool ids ("#/recovery") are still accepted so old links keep working.
+export const TOOL_SLUGS: Record<ToolType, string> = {
+  vulnerability: 'vulnerability-diagnostic',
+  investment: 'investment-analyzer',
+  recovery: 'recovery-index',
+};
+
 export function toolFromHash(): ToolType | null {
   const slug = window.location.hash.replace(/^#\/?/, '');
-  return (TOOL_ROUTES as string[]).includes(slug) ? (slug as ToolType) : null;
+  return TOOL_ROUTES.find((t) => TOOL_SLUGS[t] === slug || t === slug) ?? null;
 }
 
 // Navigate to a tool's page. Setting the hash is the single source of truth;
 // useToolRoute maps it back to the active tool, and App swaps in the page.
 export function openTool(tool: ToolType) {
-  window.location.hash = `/${tool}`;
+  window.location.hash = `/${TOOL_SLUGS[tool]}`;
   window.scrollTo({ top: 0 });
 }
 

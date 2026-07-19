@@ -95,8 +95,8 @@ export default function DiagnosticPage({ tool, onExit }: DiagnosticPageProps) {
         </div>
       </header>
 
-      {/* Diagnostic body */}
-      <div className="flex-grow w-full">
+      {/* Diagnostic body — sits above the sticky reveal footer, matching the landing page layering */}
+      <div className="flex-grow w-full relative z-10 bg-void-canvas">
         <div className="max-w-4xl mx-auto px-5 sm:px-8 py-16 md:py-28 min-h-[70vh] flex flex-col justify-center">
           {!showResult ? (
             <>

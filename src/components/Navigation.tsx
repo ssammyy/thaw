@@ -109,16 +109,16 @@ export default function Navigation() {
         <div className="flex items-center gap-2 sm:gap-4">
           <ThemeToggle />
 
-          {/* Primary CTA — enroll in the masterclass (the site's main goal) */}
+          {/* Primary CTA — get the book */}
           <button
             onClick={() => {
               setActiveCategory(null);
               setMobileMenuOpen(false);
-              document.querySelector('#masterclass')?.scrollIntoView({ behavior: 'smooth' });
+              document.querySelector('#book')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="flex px-4 sm:px-6 py-2.5 sm:py-3 bg-bone-white text-void-canvas rounded-lg text-caption font-bold tracking-[0.12em] uppercase hover:bg-arterial-red hover:text-bone-white group transition-colors duration-200 cursor-pointer items-center gap-2"
           >
-            Enroll <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            Get the book <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
 
           <button
