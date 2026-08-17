@@ -6,6 +6,7 @@
 import { motion } from 'motion/react';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import Footer from './Footer';
+import WhatsAppButton from './WhatsAppButton';
 
 interface AboutPageProps {
   onExit: () => void;
@@ -195,6 +196,7 @@ export default function AboutPage({ onExit }: AboutPageProps) {
       </div>
 
       <Footer />
+      <WhatsAppButton />
     </main>
   );
 }

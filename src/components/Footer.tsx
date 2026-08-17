@@ -5,6 +5,7 @@
 
 import { Instagram, Twitter, Linkedin, ArrowUp } from 'lucide-react';
 import { openPage } from '../useToolRoute';
+import { WhatsAppIcon, whatsappLink } from './WhatsAppButton';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -21,6 +22,15 @@ export default function Footer() {
                 Koech Boniface Kiprono <span className="serif-italic">for the</span> financial integrity of emerging markets.
              </p>
              <div className="flex gap-4">
+                <a
+                  href={whatsappLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Chat with us on WhatsApp"
+                  className="w-12 h-12 flex items-center justify-center border border-iron/20 rounded-lg text-ash hover:text-bone-white hover:border-arterial-red transition-all"
+                >
+                  <WhatsAppIcon size={18} />
+                </a>
                 {[Instagram, Twitter, Linkedin].map((Icon, i) => (
                   <a key={i} href="#" className="w-12 h-12 flex items-center justify-center border border-iron/20 rounded-lg text-ash hover:text-bone-white hover:border-arterial-red transition-all">
                     <Icon size={18} strokeWidth={1.5} />

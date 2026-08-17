@@ -49,15 +49,6 @@ export default function Navigation() {
         { name: 'Quarterly Report', desc: 'The state of financial predation in Africa.', target: '#report' }
       ]
     },
-    {
-      label: 'PLATFORM',
-      title: 'systemic network',
-      items: [
-        { name: 'Riskily Intelligence', desc: 'Real-time data from the shadow markets.', target: 'https://riskily.io' },
-        { name: 'Data Access', desc: 'Premium case data and structural indicators.', target: '#network' },
-        { name: 'Expert Network', desc: 'Connect with strategic intelligence collectives.', target: '#network' }
-      ]
-    },
   ];
 
   const handleNavigate = (item: MenuItem) => {

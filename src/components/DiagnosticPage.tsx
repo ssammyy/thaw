@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { DiagnosticToolData } from '../types';
 import Footer from './Footer';
+import WhatsAppButton from './WhatsAppButton';
 
 interface DiagnosticPageProps {
   tool: DiagnosticToolData;
@@ -286,6 +287,7 @@ export default function DiagnosticPage({ tool, onExit }: DiagnosticPageProps) {
       </div>
 
       <Footer />
+      <WhatsAppButton />
     </main>
   );
 }
