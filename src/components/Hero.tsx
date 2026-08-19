@@ -6,6 +6,7 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { whatsappLink } from './WhatsAppButton';
 
 const scrollTo = (selector: string) => {
   document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
@@ -101,13 +102,15 @@ export default function Hero() {
                 Take the free test
                 <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
-              <button
-                onClick={() => scrollTo('#book')}
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 px-6 py-4 rounded-lg border border-iron/25 text-caption font-bold tracking-[0.15em] uppercase text-ash hover:text-bone-white hover:border-arterial-red transition-all duration-200 cursor-pointer group"
               >
                 Get the book
                 <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </button>
+              </a>
             </div>
 
             <div className="flex items-center gap-4">
