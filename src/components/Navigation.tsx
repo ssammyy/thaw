@@ -3,12 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ArrowUpRight, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { openTool } from '../useToolRoute';
 import { ToolType } from '../types';
 import ThemeToggle from './ThemeToggle';
+import { whatsappLink, WhatsAppIcon } from './WhatsAppButton';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -100,17 +101,19 @@ export default function Navigation() {
         <div className="flex items-center gap-2 sm:gap-4">
           <ThemeToggle />
 
-          {/* Primary CTA — get the book */}
-          <button
+          {/* Primary CTA — chat with us on WhatsApp */}
+          <a
+            href={whatsappLink()}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => {
               setActiveCategory(null);
               setMobileMenuOpen(false);
-              document.querySelector('#book')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="flex px-4 sm:px-6 py-2.5 sm:py-3 bg-bone-white text-void-canvas rounded-lg text-caption font-bold tracking-[0.12em] uppercase hover:bg-arterial-red hover:text-bone-white group transition-colors duration-200 cursor-pointer items-center gap-2"
           >
-            Get the book <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </button>
+            Chat with us <WhatsAppIcon size={14} />
+          </a>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

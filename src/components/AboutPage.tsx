@@ -24,8 +24,12 @@ const ROLES = ['Banker', 'Businessman', 'Author', 'Life Coach'];
 
 export default function AboutPage({ onExit }: AboutPageProps) {
   const scrollToHomeAnchor = (anchor: string) => {
-    // Leaving the route first, then letting the landing page scroll to the section.
-    window.location.hash = anchor;
+    // Leave the route first; the landing page mounts on the next render, so
+    // defer the scroll a frame to give its DOM time to exist.
+    onExit();
+    requestAnimationFrame(() => {
+      document.querySelector(anchor)?.scrollIntoView({ behavior: 'smooth' });
+    });
   };
 
   return (

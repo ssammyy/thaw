@@ -62,7 +62,7 @@ export default function MasterclassSection() {
                     transition={{ delay: 0.2 + (i * 0.1) }}
                     className="flex gap-4 sm:gap-8 group"
                   >
-                    <span className="ornamental text-subheading text-arterial-red block w-8">0{i+1}</span>
+                    <span className="ornamental text-subheading text-arterial-red block w-12 sm:w-14 flex-shrink-0">0{i+1}</span>
                     <div className="border-b border-iron/10 pb-6 flex-grow">
                        <h4 className="text-subheading text-bone-white leading-tight group-hover:text-arterial-red transition-colors lowercase">{module.title}</h4>
                        <p className="text-caption text-pebble mt-2 font-medium">{module.desc}</p>
