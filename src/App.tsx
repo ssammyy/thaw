@@ -20,7 +20,6 @@ import EmailSection from './components/EmailSection';
 import TransitionMoment from './components/TransitionMoment';
 import Footer from './components/Footer';
 import MobileEnrollBar from './components/MobileEnrollBar';
-import WhatsAppButton from './components/WhatsAppButton';
 import DiagnosticPage from './components/DiagnosticPage';
 import AboutPage from './components/AboutPage';
 import { motion, useScroll, useSpring } from 'motion/react';
@@ -105,7 +104,6 @@ export default function App() {
       <Footer />
 
       <MobileEnrollBar />
-      <WhatsAppButton />
     </main>
   );
 }

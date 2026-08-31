@@ -7,10 +7,13 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 
+const BOOK_LINK =
+  'https://nuriakenya.com/product/the-house-always-wins-forex-betting-and-the-quick-money-illusion-and-what-to-do-instead-by-boniface-koech/';
+
 /**
- * Persistent primary call-to-action for mobile. Keeps "enroll in the masterclass"
- * one tap away once the visitor scrolls past the hero, so the site's aim is never
- * ambiguous on a phone. Hidden on lg+ where the nav CTA stays in view.
+ * Persistent primary call-to-action for mobile. Keeps "get the book" one tap away
+ * once the visitor scrolls past the hero, so the site's aim is never ambiguous on
+ * a phone. Hidden on lg+ where the nav CTA stays in view.
  */
 export default function MobileEnrollBar() {
   const [visible, setVisible] = useState(false);
@@ -38,16 +41,15 @@ export default function MobileEnrollBar() {
           transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
           className="lg:hidden fixed bottom-4 left-4 right-4 z-[90]"
         >
-          <button
-            onClick={() => document.querySelector('#masterclass')?.scrollIntoView({ behavior: 'smooth' })}
+          <a
+            href={BOOK_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full flex items-center justify-between gap-3 px-6 py-4 bg-bone-white text-void-canvas rounded-xl shadow-2xl cursor-pointer group"
           >
-            <span className="flex flex-col items-start leading-tight">
-              <span className="text-caption font-bold tracking-[0.15em] uppercase">Enroll in the Masterclass</span>
-              <span className="text-[10px] tracking-widest uppercase text-iron">From KES 1,500 · First 50 students</span>
-            </span>
+            <span className="text-caption font-bold tracking-[0.15em] uppercase">Get the book</span>
             <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
-          </button>
+          </a>
         </motion.div>
       )}
     </AnimatePresence>

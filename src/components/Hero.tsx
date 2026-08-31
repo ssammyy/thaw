@@ -6,7 +6,6 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { whatsappLink } from './WhatsAppButton';
 
 const scrollTo = (selector: string) => {
   document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
@@ -99,11 +98,11 @@ export default function Hero() {
                 onClick={() => scrollTo('#tools')}
                 className="flex items-center justify-center gap-3 px-7 py-4 bg-bone-white text-void-canvas rounded-lg text-caption font-bold tracking-[0.15em] uppercase hover:bg-arterial-red hover:text-bone-white transition-colors duration-200 cursor-pointer group"
               >
-                Take the free test
+                Try the free tools
                 <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
               <a
-                href={whatsappLink()}
+                href="https://nuriakenya.com/product/the-house-always-wins-forex-betting-and-the-quick-money-illusion-and-what-to-do-instead-by-boniface-koech/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 px-6 py-4 rounded-lg border border-iron/25 text-caption font-bold tracking-[0.15em] uppercase text-ash hover:text-bone-white hover:border-arterial-red transition-all duration-200 cursor-pointer group"
