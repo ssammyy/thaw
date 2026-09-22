@@ -6,7 +6,7 @@
 import { Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { openTool } from '../useToolRoute';
+import { openTool, openPage } from '../useToolRoute';
 import { ToolType } from '../types';
 import ThemeToggle from './ThemeToggle';
 import { whatsappLink, WhatsAppIcon } from './WhatsAppButton';
@@ -29,6 +29,7 @@ export default function Navigation() {
     desc: string;
     target: string;
     tool?: string;
+    page?: string;
   }
 
   const menuData: { label: string; title: string; items: MenuItem[] }[] = [
@@ -38,7 +39,8 @@ export default function Navigation() {
       items: [
         { name: 'Vulnerability diagnostic', desc: 'Map every exit point in your financial perimeter.', target: '#tools', tool: 'vulnerability' },
         { name: 'Investment Analyzer', desc: 'Audit any opportunity against Scarcity Architecture.', target: '#tools', tool: 'investment' },
-        { name: 'Recovery Index', desc: 'Quantify your capacity for restoration.', target: '#tools', tool: 'recovery' }
+        { name: 'Recovery Index', desc: 'Quantify your capacity for restoration.', target: '#tools', tool: 'recovery' },
+        { name: 'KELLY Edge', desc: 'How much can you afford to risk on a bet, trade or opportunity.', target: '#tools', page: 'kelly-edge' }
       ]
     },
     {
@@ -59,9 +61,13 @@ export default function Navigation() {
       window.open(item.target, '_blank', 'noopener,noreferrer');
       return;
     }
-    // A diagnostic navigates to its own full page; everything else scrolls.
+    // A diagnostic or content page navigates to its own full page; everything else scrolls.
     if (item.tool) {
       openTool(item.tool as ToolType);
+      return;
+    }
+    if (item.page) {
+      openPage(item.page as Parameters<typeof openPage>[0]);
       return;
     }
     document.querySelector(item.target)?.scrollIntoView({ behavior: 'smooth' });

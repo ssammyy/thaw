@@ -5,9 +5,9 @@
 
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
-import { ShieldAlert, TrendingUp, RotateCcw, ArrowUpRight } from 'lucide-react';
+import { ShieldAlert, TrendingUp, RotateCcw, Calculator, ArrowUpRight } from 'lucide-react';
 import { ToolType } from '../types';
-import { openTool } from '../useToolRoute';
+import { openTool, openPage } from '../useToolRoute';
 import JourneyConnector from './JourneyConnector';
 
 export default function ToolsSection() {
@@ -22,25 +22,36 @@ export default function ToolsSection() {
 
   const tools = [
     {
-      id: 'vulnerability' as ToolType,
+      id: 'vulnerability',
       title: 'vulnerability diagnostic',
       subtitle: '20 point scan',
       icon: <ShieldAlert size={24} strokeWidth={1.5} />,
-      description: 'Dismantle your illusion of security. Map every exit point in your financial perimeter.'
+      description: 'Dismantle your illusion of security. Map every exit point in your financial perimeter.',
+      onOpen: () => openTool('vulnerability' as ToolType)
     },
     {
-      id: 'investment' as ToolType,
+      id: 'investment',
       title: 'investment analyzer',
       subtitle: 'legitimacy verdict',
       icon: <TrendingUp size={24} strokeWidth={1.5} />,
-      description: 'Audit any opportunity against the Scarcity Architecture protocols. Legitimate or Anomaly.'
+      description: 'Audit any opportunity against the Scarcity Architecture protocols. Legitimate or Anomaly.',
+      onOpen: () => openTool('investment' as ToolType)
     },
     {
-      id: 'recovery' as ToolType,
+      id: 'recovery',
       title: 'recovery index',
       subtitle: 'paths to rebirth',
       icon: <RotateCcw size={24} strokeWidth={1.5} />,
-      description: 'Quantify your capacity for restoration. Model the trajectory of your return.'
+      description: 'Quantify your capacity for restoration. Model the trajectory of your return.',
+      onOpen: () => openTool('recovery' as ToolType)
+    },
+    {
+      id: 'kelly-edge',
+      title: 'kelly edge',
+      subtitle: 'risk allocation calculator',
+      icon: <Calculator size={24} strokeWidth={1.5} />,
+      description: 'How much can you afford to risk on a bet, a trade, or a quick-money offer? Calculate it before you commit.',
+      onOpen: () => openPage('kelly-edge')
     }
   ];
 
@@ -86,7 +97,7 @@ export default function ToolsSection() {
           <div className="mt-12">
             <h2 className="text-display-xl leading-[0.85] lowercase">the</h2>
             <div className="flex items-baseline flex-wrap -mt-4">
-              <span className="serif-italic text-heading text-ash/60 mr-6">3 module</span>
+              <span className="serif-italic text-heading text-ash/60 mr-6">4 module</span>
               <h2 className="text-display-xl leading-[0.85] lowercase">self-test.</h2>
             </div>
           </div>
@@ -98,7 +109,7 @@ export default function ToolsSection() {
         </p>
         <JourneyConnector active="tools" />
 
-        <div id="tools" className="mt-24 md:mt-32 grid md:grid-cols-3 gap-6 md:gap-12 scroll-mt-32">
+        <div id="tools" className="mt-24 md:mt-32 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 scroll-mt-32">
           {tools.map((tool, i) => (
             <motion.div
               key={tool.id}
@@ -109,12 +120,12 @@ export default function ToolsSection() {
               variants={cardVariants}
               whileHover={{ y: -8 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className={`relative overflow-hidden p-8 md:p-12 rounded-xl bg-gradient-to-b from-charcoal-plate/80 to-charcoal-plate/20 backdrop-blur-sm group cursor-pointer flex flex-col justify-between min-h-[400px] md:min-h-[500px] transition-[border-color,box-shadow] duration-300 ease-out hover:shadow-[0_24px_60px_-12px_rgba(230,59,78,0.4)] ${
+              className={`relative overflow-hidden p-8 md:p-10 rounded-xl bg-gradient-to-b from-charcoal-plate/80 to-charcoal-plate/20 backdrop-blur-sm group cursor-pointer flex flex-col justify-between min-h-[380px] md:min-h-[460px] transition-[border-color,box-shadow] duration-300 ease-out hover:shadow-[0_24px_60px_-12px_rgba(230,59,78,0.4)] ${
                 i === 0
                   ? 'border border-arterial-red/40 shadow-[0_12px_40px_-12px_rgba(230,59,78,0.3)]'
                   : 'border border-iron/25 shadow-[0_10px_34px_rgba(0,0,0,0.45)]'
               }`}
-              onClick={() => openTool(tool.id)}
+              onClick={tool.onOpen}
             >
               {/* Ambient hover glow */}
               <span className="pointer-events-none absolute -top-24 -right-24 w-56 h-56 rounded-full bg-arterial-red/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

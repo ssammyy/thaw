@@ -22,6 +22,7 @@ import Footer from './components/Footer';
 import MobileEnrollBar from './components/MobileEnrollBar';
 import DiagnosticPage from './components/DiagnosticPage';
 import AboutPage from './components/AboutPage';
+import KellyEdgePage from './components/KellyEdgePage';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { useToolRoute, usePageRoute, closeTool } from './useToolRoute';
 import { TOOLS_DATA } from './data/diagnosticData';
@@ -44,6 +45,12 @@ export default function App() {
   // Content pages (the author bio) are their own full pages on the same scheme.
   if (activePage === 'about') {
     return <AboutPage onExit={closeTool} />;
+  }
+
+  // KELLY Edge is a calculator, not a fixed-question diagnostic, so it gets
+  // its own full page rather than fitting the DiagnosticToolData shape.
+  if (activePage === 'kelly-edge') {
+    return <KellyEdgePage onExit={closeTool} />;
   }
 
   return (

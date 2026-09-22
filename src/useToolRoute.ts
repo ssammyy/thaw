@@ -46,7 +46,7 @@ export function closeTool() {
 
 // Static content pages (e.g. the author bio) live on the same path scheme as
 // the tools — "/about" — so they deep-link cleanly given SPA fallback.
-export const PAGE_ROUTES = ['about'] as const;
+export const PAGE_ROUTES = ['about', 'kelly-edge'] as const;
 export type PageRoute = (typeof PAGE_ROUTES)[number];
 
 export function pageFromPath(): PageRoute | null {
